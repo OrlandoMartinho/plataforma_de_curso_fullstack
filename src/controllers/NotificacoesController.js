@@ -59,7 +59,7 @@ const notificacoesController = {
         finalistasController.addFinalista
         const {accessToken} = req.body
 
-        const id_usuario = token.usuarioEmail(accessToken)
+        const id_usuario = token.usuarioId(accessToken)
         
         if(!accessToken){
             return res.status(400).json({Mensagem:"Complete bem os campos"})
@@ -70,14 +70,14 @@ const notificacoesController = {
         }
 
         const deleteNotificacoesoQuery = 'DELETE FROM notificacoes WHERE id_usuario = ?';
-
-        db.query(deleteNotificacoesoQuery,[id_usuario],(err)=>{
+        console.log(id_usuario)
+        db.query(deleteNotificacoesoQuery,[id_usuario],(err,result)=>{
 
             if(err){
                 console.log("Erro"+err.message)
                 return res.status(500).json({Mensagem:"Erro interno do servidor"})
             }
-
+            console.log(result.affectedRows)
             return res.status(200).json({Mensagem:"Notificacoes eliminadas com sucesso"})
 
         })

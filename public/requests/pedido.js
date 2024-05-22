@@ -48,7 +48,7 @@ function preencherTabela(dados) {
                       
                       // Libera o URL criado
                       URL.revokeObjectURL(videoUrl);
-             
+                        alert("Aguarde até o download terminar")
             
                     })
                     .catch(function(error) {
@@ -104,7 +104,7 @@ function preencherTabela(dados) {
                     .then(data => {
                         console.log(data)
                         alert("Assinatura aaceitada!");
-                        //location.reload()
+                        location.reload()
                     })
                     .catch(error => {
                         console.error('Erro ao alterar senha:', error);
