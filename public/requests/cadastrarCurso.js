@@ -56,10 +56,10 @@ document.querySelector('#cadastrar').addEventListener("click", async () => {
 
             const videoData = await videoResponse.json();
             console.log('Arquivo enviado com sucesso:', videoData);
-            alert("Curso cadastrado com sucesso")
-            location.reload();
-        }
+       
 
+        }
+        alert("Curso cadastrado com sucesso")
     } catch (error) {
         console.error('Erro:', error);
     }
