@@ -107,10 +107,7 @@ connection.connect(async (err) => {
         numero_do_bi varchar(45) DEFAULT "...",
         localizacao  varchar (100) default "...",
         assinado int default 0,
-<<<<<<< HEAD
         id_curso int default null, 
-=======
->>>>>>> 655a6b34c0d6849943a246ef570fb52734d8803a
         comprovativo TEXT DEFAULT null,
         data_assinatura VARCHAR(10) DEFAULT NULL,
         token TEXT DEFAULT NULL
@@ -166,14 +163,11 @@ connection.connect(async (err) => {
           nome_arquivo TEXT DEFAULT NULL,
           id_finalista INT DEFAULT NULL,
           id_usuarios INT DEFAULT null
-<<<<<<< HEAD
         );`,
         `CREATE TABLE IF NOT EXISTS cursos_assinados(
           id_curso_assinado int not null auto_increment primary key,
           id_usuario int,
           id_curso int
-=======
->>>>>>> 655a6b34c0d6849943a246ef570fb52734d8803a
         );`
     ]; 
  
