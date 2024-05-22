@@ -38,7 +38,7 @@ fetch(base_url + 'finalistas/obter_todos_certificados', {
         certificadoContent.classList.add('certificadoContent');
 
         const img = document.createElement('img');
-        img.src = certificado.url; // Use o URL fornecido no objeto certificado
+        img.src = '../assets/img/certificate.png'; // Use o URL fornecido no objeto certificado
         img.alt = 'Certificado';
         const btnDownload = document.createElement('button');
         btnDownload.classList.add('btn-download');
@@ -46,25 +46,40 @@ fetch(base_url + 'finalistas/obter_todos_certificados', {
 
         // Adiciona o evento de clique ao botão de download
         btnDownload.addEventListener('click', () => {
-            fetch(certificado.url) // Use diretamente o URL do certificado
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Erro ao obter certificado: ' + response.status);
-                }
-                return response.blob();
-            })
-            .then(blob => {
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'certificado.pdf'; // Nome do arquivo para download (altere conforme necessário)
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-            })
-            .catch(error => {
-                console.error('Erro ao obter certificado:', error);
-            });
+            fetch(`${base_url}finalistas/obter_certificado`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  accessToken: localStorage.getItem("token"),
+                  nomeDoArquivo:certificado.nome_do_arquivo
+                })
+              })
+                .then(function(response) {
+                  if (!response.ok) {
+                    throw new Error('Erro ao solicitar o vídeo: ' + response.statusText);
+                  }
+                  return response.blob();
+                })
+                .then(function(videoBlob) {
+                  // Cria uma URL temporária para o blob do vídeo
+                  var videoUrl = URL.createObjectURL(videoBlob);
+                  var downloadLink = document.createElement('a');
+                  downloadLink.href = videoUrl;
+                  downloadLink.download = certificado.nome_do_arquivo; 
+                  
+                  // Aciona o evento de clique no link
+                  downloadLink.click();
+                  
+                  // Libera o URL criado
+                  URL.revokeObjectURL(videoUrl);
+                    alert("Aguarde até o download terminar")
+        
+                })
+                .catch(function(error) {
+                  console.error('Erro ao solicitar o vídeo:', error);
+                });
         });
 
         certificadoContent.appendChild(img);
