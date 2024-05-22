@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="../../css/pedidos.css">
+    <link rel="shortcut icon" href="../../assets/img/logo.png" type="image/x-icon">
+    <script src="../../requests/autenticacaoADM.js"></script>
+</head>
+<body>
+ 
+ 
+    <section class="items">
+        <div class="lateral-menu">
+            <img class="imgHome" src="../../assets/img/logoHome.png" alt="">
+            <nav>
+                <ul>
+                    <li class="center-items "><img src="../../assets/icon/homelight.png" alt=""><a href="home-admin.html">Visão global</a></li>
+                    <li class="center-items "><img src="../../assets/icon/upload-cloud.svg" alt=""><a href="upload-initial.html">Cursos</a></li>
+                    <li class="center-items "><img src="../../assets/icon/icons8_books.png" alt=""><a href="finalistas.html">Finalistas</a></li>
+                    <li class="center-items select"><img src="../../assets/icon/icons8_books.png" alt=""><a href="Pedidos.html">Assinaturas</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="main">
+            <div class="main-header">
+                <div class="input-search">
+                    <img src="../../assets/icon/search.png" alt="" class="search">
+                    <input type="text" placeholder="Pesquisar" id="pesquisar">
+                </div>
+                <div class="profile">
+                    <a href="notification-admin.html">
+                        <img src="../../assets/icon/bell.png" alt="">
+                    </a>
+                </div>
+            </div>
+
+            <h1>Lista dos Pedidos de assinaturas</h1>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Telefone</th>
+                            <th>Aprovação</th>
+                            <th>Comprovativo</th>
+                            <th>Rejeição</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Adicione mais linhas conforme necessário -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+   <script src="../../requests/pedido.js"></script>
+</body>
+</html>
