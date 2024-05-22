@@ -29,9 +29,7 @@ document.querySelector('#cadastrar').addEventListener("click", async () => {
         if (!response.ok) {
             throw new Error('Erro ao fazer a requisição: ' + response.status);
         }
-alert(modulo)
-alert(modo)
-alert(categoria)
+
         const cursoData = await response.json();
         localStorage.setItem("nome_do_formador", nome_do_formador); 
         localStorage.setItem("titulo", titulo); 
@@ -58,6 +56,8 @@ alert(categoria)
 
             const videoData = await videoResponse.json();
             console.log('Arquivo enviado com sucesso:', videoData);
+            alert("Curso cadastrado com sucesso")
+            location.reload();
         }
 
     } catch (error) {

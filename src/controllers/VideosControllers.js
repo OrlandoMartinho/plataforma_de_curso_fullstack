@@ -3,6 +3,7 @@ const path = require('path');
 const token = require('../utils/token');
 const db=require('../config/dbConfig');
 const finalistasController=require('../controllers/FinalistasController')
+const fs=require('fs')
 const videosControllers ={
 
     cadastrarVideos:async(req,res)=>{
@@ -74,32 +75,36 @@ const videosControllers ={
     ,
     retornarVideo: async (req, res)=> {
         try {
-            finalistasController.addFinalista()
-            const { accessToken ,id_curso} = req.body;
-            const { nomeDoArquivo } = req.params;    
-            
-            if(!accessToken||!id_curso||!nomeDoArquivo){
-                return res.status(400).json({Mensagem:"Campos incompletos"})
+            // finalistasController.addFinalista(); // Comente ou descomente esta linha conforme necessário
+            const { accessToken, id_curso,nomeDoArquivo } = req.body;
+        
+        
+            if (!accessToken || !id_curso || !nomeDoArquivo) {
+              return res.status(400).json({ mensagem: "Campos incompletos" });
             }
-
-            if(!(await token.verificarTokenUsuario(accessToken))){
-                return res.status(401).json({ mensagem: 'Tokens inválidos' });
-            }    
+        
+            if (!(await token.verificarTokenUsuario(accessToken))) {
+              return res.status(401).json({ mensagem: 'Tokens inválidos' });
+            }
+        
             // Verifica se o arquivo existe
-            const caminhoArquivo = path.join(__dirname,'../','../','uploads','cursos',id_curso, nomeDoArquivo);
+            const caminhoArquivo = path.join(__dirname, '../', '../', 'uploads', 'cursos', id_curso+'', nomeDoArquivo);
             if (!fs.existsSync(caminhoArquivo)) {
-                return res.status(404).json({ mensagem: 'Arquivo não encontrado',caminho:caminhoArquivo });
+                console.log(caminhoArquivo)
+              return res.status(404).json({ mensagem: 'Arquivo não encontrado', caminho: caminhoArquivo });
             }
-    
-            // Lê o conteúdo do arquivo
-            const conteudoArquivo = fs.readFileSync(caminhoArquivo);
-    
-            // Retorna o conteúdo do arquivo
-           return res.status(200).send(conteudoArquivo);
-        } catch (error) {
+        
+            res.setHeader('Content-Type', 'video/mp4'); // Alterado para 'video/mp4' para definir corretamente o tipo de conteúdo
+        
+            // Define o cabeçalho de Content-Disposition para indicar que é um anexo para download
+            res.setHeader('Content-Disposition', `attachment; filename="${nomeDoArquivo}"`);
+        
+            // Lê o arquivo e envia como resposta
+            fs.createReadStream(caminhoArquivo).pipe(res);
+          } catch (error) {
             console.error('Erro ao retornar arquivo:', error.message);
-           return res.status(500).json({ mensagem: 'Erro interno do servidor ao retornar arquivo' });
-        }
+            return res.status(500).json({ mensagem: 'Erro interno do servidor ao retornar arquivo' });
+          }
     
     },
     cadastrarVideoAssistido:async (req,res)=>{
