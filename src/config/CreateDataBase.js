@@ -122,7 +122,7 @@ connection.connect(async (err) => {
     
       `CREATE TABLE IF NOT EXISTS notificacoes (
           id_notificacao INT AUTO_INCREMENT PRIMARY KEY,
-          descricao VARCHAR(45) DEFAULT NULL,
+          descricao TEXT DEFAULT NULL,
           data_da_notificacao DATETIME DEFAULT current_timestamp(),
           titulo VARCHAR(45) DEFAULT NULL,
           id_usuario INT(1) DEFAULT NULL

@@ -40,7 +40,10 @@ document.querySelector('#cadastrar').addEventListener("click", async () => {
         localStorage.setItem("id_curso", cursoData.id_curso);
 
         for (let i = 0; i < arquivos.length; i++) {
-            const formData = new FormData(); // Criar um novo FormData para cada iteração do loop
+            const formData = new FormData();
+           
+        
+            videoElement.src = URL.createObjectURL(videoFile); // Criar um novo FormData para cada iteração do loop
             formData.append('id_curso', localStorage.getItem('id_curso'));
             formData.append('accessToken', localStorage.getItem("token"));
             formData.append('file', arquivos[i]);

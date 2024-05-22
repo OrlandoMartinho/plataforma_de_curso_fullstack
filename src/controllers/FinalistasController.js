@@ -28,89 +28,91 @@ const upload = multer({
 const finalistasController = {
     
     addFinalista:async()=>{
-
-      const selectQueryVideosAssistidos='SELECT * FROM videos_assistidos where id_usuario=?'
-      const selectQueryVideos='SELECT * FROM  videos where id_curso = ?'
-      const selectQueryCursos ='SELECT * FROM cursos'
-      const selectQueryUsuarios='SELECT * FROM usuarios'
-      const insertQueryFinalista='INSERT INTO finalistas(nome,id_usuario,id_curso)values(?,?,?)'
-
-      db.query(selectQueryCursos,(err,results)=>{
-        if(err){
-            console.log("Erro:"+err.message)
-            return;
-        }
-        if(results.length!=0){
-
-            const cursos =results
-
-            for (let i = 0; i < cursos.length; i++) {
-               
-                db.query(selectQueryVideos,[i],(errr,resultss)=>{
-                    if(errr){
-                        console.log("Erro:"+errr.message)
-                    }
-                
-                    if(resultss.length!=0){
-                        const videos=resultss
-                        db.query(selectQueryUsuarios,(errrr,resultsss)=>{
-                            if(errrr){
-
-                                console.log("Erro:",errrr.message)
-                            }
-
-                            if(resultsss.length!=0){
-                                const usuarios=resultsss
-                                for (let y = 0; y < usuarios.length; y++) {
-
-                                    db.query(selectQueryVideosAssistidos,[y],(errrrr,resultssss)=>{
-                                        if(errrrr){
-                                            console.log("Erro:"+errrrr.message)
-                                   
-                                        }
-                                    
-                                        if(resultssss.length!=0){
-                                            const videos_assistidos=resultssss
-                                            if(videos_assistidos.length==videos.length){
-                                                
-                                                const selectFinalistas='SELECT * FROM finalistas WHERE id_curso=?'
-                                                db.query(selectFinalistas,[i],(erro,resultado)=>{
-                                                    if(erro){
-                                                        console.log("Erro:",erro.message)
-                                                    }
-
-                                                    if(resultado.length==0){
-                                                        db.query(insertQueryFinalista,[usuarios[y].nome,y,i],(errrrrr,resultsssss)=>{
-
-                                                            if(errrrrr){
-                                                                console.log("Erro:",errrrrr.message)                                                         
-                                                            }
-                                                            const titulo="Finalista"
-                                                            const notificacao ="O usuario acabou de finalizar o curso "+cursos[i].titulo+" Agora codigo do curso:"+i
-                                                            console.log("Novo finalista adicionado com sucesso")
-                                                            notify.addNotificacao(notificacao,1,titulo)
-                                                        
-                                                        })
-                                                    }
-                                                })  
-                                            }
-                                        } 
-                                   })
-
-                                }
-                            }
-                           
-                        })
-                    }
-                   
-                })
+ 
+        const selectQueryVideosAssistidos='SELECT * FROM videos_assistidos WHERE id_usuario=?';
+        const selectQueryVideos='SELECT * FROM videos WHERE id_curso = ?';
+        const selectQueryCursos ='SELECT * FROM cursos';
+        const selectQueryUsuarios='SELECT * FROM usuarios';
+        const insertQueryFinalista='INSERT INTO finalistas(nome,id_usuario,id_curso) VALUES (?,?,?)';
+    
+        db.query(selectQueryCursos,(err,results)=>{
+            if(err){
+                console.log("Erro:"+err.message);
+                return;
             }
-        }
-        return;
-      })
-      console.log("Finalistas verificados")
-      return;
-    },
+            if(results.length!=0){
+                const cursos =results;
+    
+                for (let i = 0; i < cursos.length; i++) {
+                   
+                    db.query(selectQueryVideos,[cursos[i].id],(errr,resultss)=>{
+                        if(errr){
+                            console.log("Erro:"+errr.message);
+                            return;
+                        }
+                    
+                        if(resultss.length!=0){
+                            const videos=resultss;
+                            db.query(selectQueryUsuarios,(errrr,resultsss)=>{
+                                if(errrr){
+                                    console.log("Erro:",errrr.message);
+                                    return;
+                                }
+    
+                                if(resultsss.length!=0){
+                                    const usuarios=resultsss;
+                                    for (let y = 0; y < usuarios.length; y++) {
+    
+                                        db.query(selectQueryVideosAssistidos,[usuarios[y].id],(errrrr,resultssss)=>{
+                                            if(errrrr){
+                                                console.log("Erro:"+errrrr.message);
+                                                return;
+                                            }
+                                        
+                                            if(resultssss.length!=0){
+                                                const videos_assistidos=resultssss;
+                                                if(videos_assistidos.length==videos.length){
+                                                    
+                                                    const selectFinalistas='SELECT * FROM finalistas WHERE id_usuario=? AND id_curso=?';
+                                                    db.query(selectFinalistas,[usuarios[y].id, cursos[i].id],(erro,resultado)=>{
+                                                        if(erro){
+                                                            console.log("Erro:",erro.message);
+                                                            return;
+                                                        }
+    
+                                                        if(resultado.length==0){
+                                                            db.query(insertQueryFinalista,[usuarios[y].nome,usuarios[y].id,cursos[i].id],(errrrrr,resultsssss)=>{
+    
+                                                                if(errrrrr){
+                                                                    console.log("Erro:",errrrrr.message);
+                                                                    return;                                                       
+                                                                }
+                                                                const titulo="Finalista";
+                                                                const notificacao ="O usuário "+usuarios[y].nome+" acabou de finalizar o curso "+cursos[i].titulo+". Código do curso: "+cursos[i].id;
+                                                                console.log("Novo finalista adicionado com sucesso");
+                                                                notify.addNotificacao(notificacao,1,titulo);
+                                                            
+                                                            });
+                                                        }
+                                                    });  
+                                                }
+                                            } 
+                                       });
+    
+                                    }
+                                }
+                               
+                            });
+                        }
+                       
+                    });
+                }
+            }
+            console.log("Finalistas verificados");
+            return;
+        });
+    }
+    ,
     cadastrarCertificado:async(req,res)=>{
 
         try {
@@ -199,36 +201,36 @@ const finalistasController = {
 
     },
     retornarCertificado: async (req, res)=> {
-        try {
-            const { accessToken } = req.body;
-            const { nomeDoArquivo } = req.params;
-    
-            if (!accessToken || !nomeDoArquivo) {
-                return res.status(400).json({ Mensagem: "Campos incompletos" });
-            }
-    
-            if (!(await token.verificarTokenUsuario(accessToken)) || token.usuarioId(accessToken) != 1) {
-                return res.status(401).json({ mensagem: 'Token inválido' });
-            }
-    
-            // Verifica se o arquivo existe
-            const caminhoArquivo = path.join(__dirname, '..', '..', 'uploads', 'certificados', nomeDoArquivo);
-            if (!fs.existsSync(caminhoArquivo)) {
-                return res.status(404).json({ mensagem: 'Arquivo não encontrado' });
-            }
-    
-            // Define o cabeçalho da resposta para indicar que é um arquivo PDF (ou outro tipo de arquivo conforme necessário)
-            res.setHeader('Content-Type', 'application/pdf');
-    
-            // Define o cabeçalho de Content-Disposition para indicar que é um anexo para download
-            res.setHeader('Content-Disposition', `attachment; filename=${nomeDoArquivo}`);
-    
-            // Lê o arquivo e envia como resposta
-            fs.createReadStream(caminhoArquivo).pipe(res);
-        } catch (error) {
-            console.error('Erro ao retornar arquivo:', error.message);
-            res.status(500).json({ mensagem: 'Erro interno do servidor ao retornar arquivo' });
+      try {
+        const { accessToken } = req.body;
+        const { nomeDoArquivo } = req.params;
+
+        if (!accessToken || !nomeDoArquivo) {
+            return res.status(400).json({ Mensagem: "Campos incompletos" });
         }
+
+        if (!(await token.verificarTokenUsuario(accessToken)) || token.usuarioId(accessToken) != 1) {
+            return res.status(401).json({ mensagem: 'Token inválido' });
+        }
+
+        // Verifica se o arquivo existe
+        const caminhoArquivo = path.join(__dirname, '..', '..', 'uploads', 'certificados', nomeDoArquivo);
+        if (!fs.existsSync(caminhoArquivo)) {
+            return res.status(404).json({ mensagem: 'Arquivo não encontrado' });
+        }
+
+        // Define o cabeçalho da resposta para indicar que é um arquivo PDF (ou outro tipo de arquivo conforme necessário)
+        res.setHeader('Content-Type', 'application/pdf');
+
+        // Define o cabeçalho de Content-Disposition para indicar que é um anexo para download
+        res.setHeader('Content-Disposition', `attachment; filename=${nomeDoArquivo}`);
+
+        // Lê o arquivo e envia como resposta
+        fs.createReadStream(caminhoArquivo).pipe(res);
+    } catch (error) {
+        console.error('Erro ao retornar arquivo:', error.message);
+        res.status(500).json({ mensagem: 'Erro interno do servidor ao retornar arquivo' });
+    }
     
     },
     obterTodosFinalistas:async(req,res)=>{

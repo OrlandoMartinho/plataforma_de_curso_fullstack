@@ -158,8 +158,8 @@ video{
 }
 
 #main-video {
-    width: 100%;
-    height: auto;
+    width: 55vw;
+    height: 55vh;
 }
 
 .play-list {
@@ -170,10 +170,17 @@ video{
 .play-list-item {
     cursor: pointer;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #0065D4;
+    border-radius: 4px;
+    box-shadow: #414141 1px 1px ;
     margin-bottom: 10px;
 }
 
 .play-list-item:hover {
     background-color: #f0f0f0;
+}
+
+.aula_titulo{
+    color: #0065D4;
+    font-size:20px;
 }

@@ -59,8 +59,40 @@ document.addEventListener('DOMContentLoaded', function() {
             const authorName = document.getElementById('author-name');
             const authorRole = document.getElementById('author-role');
             const videoDescription = document.getElementById('video-description');
-            
-            
+            mainVideo.controls = false;
+            mainVideo.addEventListener('ended', function() {
+               
+                const requestOptions3 = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        accessToken: localStorage.getItem("token"),
+                        id_curso:localStorage.getItem("id_curso"),
+                        id_video:localStorage.getItem("id_video")
+                    })
+                };
+                fetch(`${base_url}videos/registrar_assistidos`, requestOptions3)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao fazer a requisição: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+
+                    alert('O vídeo foi concluído!');
+
+
+                }
+
+                ).catch(error=>{
+                    console.log("Erro:",error)
+                })
+
+
+              });
             // Obtém os valores dinâmicos que você deseja adicionar
             var avatarSrc = "../assets/img/user-circle.png";
             console.log(data)
@@ -106,6 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
                   
                       // Define a URL do vídeo como a origem do elemento de vídeo
                       mainVideo.src =videoUrl;
+                      localStorage.setItem("id_video",video.id_video)
             
                     })
                     .catch(function(error) {
