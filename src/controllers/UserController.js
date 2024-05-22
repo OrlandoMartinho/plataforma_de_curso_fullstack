@@ -683,8 +683,8 @@ const UsersController = {
         try {
             finalistasController.addFinalista();
     
-            const { accessToken } = req.body;
-            const { nomeDoArquivo } = req.params;
+            const { accessToken,nomeDoArquivo} = req.body;
+       
     
             if (!accessToken || !nomeDoArquivo) {
                 return res.status(400).json({ mensagem: "Campos incompletos" });

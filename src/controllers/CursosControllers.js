@@ -205,52 +205,58 @@ const cursosControllers ={
 
         
     },
-    obterTodosCursosAssinados:async (req,res)=>{
-        finalistasController.addFinalista
+    obterTodosCursosAssinados: async (req, res) => {
         const { accessToken } = req.body;
-
-        if(!accessToken){
-            return res.status(400).json({Mensagem:"Campos incompletos"})
+      
+        if (!accessToken) {
+          return res.status(400).json({ Mensagem: "Campos incompletos" });
         }
-
-        if(!await token.verificarTokenUsuario(accessToken)){
-            return res.status(401).json({Mensagem:"Token invalido"})
-        }   
-
-        const select_query_cursos_assinados = 'SELECT * FROM cursos_assinados where id_usuario = ?'
-        const select_query_cursos='SELECT * FROM cursos WHERE id_curso = ?'
-        
-        db.query(select_query_cursos_assinados,[token.usuarioId(accessToken)],(err, result) => {
-        
-            if(err){
-                console.log("Erro:"+err.message)
-                return results.status(500).json({Mensagem:"Erro interno do servidor"})
+      
+        if (!(await token.verificarTokenUsuario(accessToken))) {
+          return res.status(401).json({ Mensagem: "Token inválido" });
+        }
+      
+        const select_query_cursos_assinados =
+          "SELECT * FROM cursos_assinados WHERE id_usuario = ?";
+        const select_query_cursos = "SELECT * FROM cursos WHERE id_curso = ?";
+      
+        db.query(
+          select_query_cursos_assinados,
+          [token.usuarioId(accessToken)],
+          (err, result) => {
+            if (err) {
+              console.log("Erro:" + err.message);
+              return res.status(500).json({ Mensagem: "Erro interno do servidor" });
             }
-            let cursos=[]
-   
+      
+            let cursos = [];
+            let count = 0;
+      
+            if (result.length === 0) {
+              return res.status(200).json({ cursos: cursos });
+            }
+      
             for (let i = 0; i < result.length; i++) {
-                db.query(select_query_cursos,[result[i].id_curso],(errr, results)=>{
-                    
-                    if(errr){
-                        console.log("Erro:",errr.message)
-                        return res.status(500).json({mensagem:"Erro interno do servidor"})
-                    }
-                    
-                    cursos.push(results[0]);
-                    console.log(cursos)
-                    if(i < result.length){
-                        console.log(cursos)
-                        return res.status(200).json({cursos:cursos})
-                    }
-
-                })
+              db.query(select_query_cursos, [result[i].id_curso], (errr, results) => {
+                if (errr) {
+                  console.log("Erro:", errr.message);
+                  return res
+                    .status(500)
+                    .json({ mensagem: "Erro interno do servidor" });
+                }
+      
+                cursos.push(results[0]);
+      
+                count++;
+      
+                if (count === result.length) {
+                  return res.status(200).json({ cursos: cursos });
+                }
+              });
             }
-           
-            
-        
-        })
-
-    },
+          }
+        );
+      },
     obterUmCursoAssinadoPorId:async(req,res)=>{
         finalistasController.addFinalista()
         const { accessToken ,id_curso_assinado} = req.body;

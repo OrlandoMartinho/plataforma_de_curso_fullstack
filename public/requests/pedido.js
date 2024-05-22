@@ -20,7 +20,40 @@ function preencherTabela(dados) {
             downloadButton.textContent = "Comprovativo";
             downloadButton.className = "button-download";
             downloadButton.addEventListener("click", () => {
-                // Lógica para o botão de download
+                fetch(`${base_url}usuarios/obter_comprovativo`, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                      accessToken: localStorage.getItem("token"),
+                      nomeDoArquivo:item.comprovativo
+                    })
+                  })
+                    .then(function(response) {
+                      if (!response.ok) {
+                        throw new Error('Erro ao solicitar o vídeo: ' + response.statusText);
+                      }
+                      return response.blob();
+                    })
+                    .then(function(videoBlob) {
+                      // Cria uma URL temporária para o blob do vídeo
+                      var videoUrl = URL.createObjectURL(videoBlob);
+                      var downloadLink = document.createElement('a');
+                      downloadLink.href = videoUrl;
+                      downloadLink.download = item.comprovativo; // Nome do arquivo de download
+                      
+                      // Aciona o evento de clique no link
+                      downloadLink.click();
+                      
+                      // Libera o URL criado
+                      URL.revokeObjectURL(videoUrl);
+             
+            
+                    })
+                    .catch(function(error) {
+                      console.error('Erro ao solicitar o vídeo:', error);
+                    });
             });
 
             const aprovarButton = document.createElement("button");

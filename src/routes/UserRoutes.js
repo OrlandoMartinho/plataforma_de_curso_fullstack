@@ -33,7 +33,7 @@ router.post('/resetar_senha', UsersController.resetarSenha)
 
 router.post('/pesquisar',UsersController.pesquisarUsuario)
 
-router.post('/obter_comprovativo/:nomeDoArquivo', UsersController.retornarComprovativo)
+router.post('/obter_comprovativo', UsersController.retornarComprovativo)
 
 router.put('/reverter_assinatura',UsersController.reverterAssinatura)
 

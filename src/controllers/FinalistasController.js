@@ -202,8 +202,7 @@ const finalistasController = {
     },
     retornarCertificado: async (req, res)=> {
       try {
-        const { accessToken } = req.body;
-        const { nomeDoArquivo } = req.params;
+        const { accessToken,nomeDoArquivo } = req.body;
 
         if (!accessToken || !nomeDoArquivo) {
             return res.status(400).json({ Mensagem: "Campos incompletos" });
