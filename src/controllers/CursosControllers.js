@@ -77,7 +77,7 @@ const cursosControllers ={
                  return res.status(500).json({Mensagem:"Erro interno do servidor"})
                }
 
-               return res.status(200).json({curso:result,videos:results})
+               return res.status(200).json({curso:result[0],videos:results})
 
             })
 

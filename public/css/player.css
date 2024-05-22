@@ -146,3 +146,34 @@ video{
     gap:2rem;
     margin:2rem 0;
 }
+
+.container {
+    display: flex;
+    flex-direction: row;
+}
+
+.Player {
+    flex: 1;
+    padding: 20px;
+}
+
+#main-video {
+    width: 100%;
+    height: auto;
+}
+
+.play-list {
+    width: 300px;
+    padding: 20px;
+}
+
+.play-list-item {
+    cursor: pointer;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.play-list-item:hover {
+    background-color: #f0f0f0;
+}
