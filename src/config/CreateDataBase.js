@@ -153,7 +153,7 @@ connection.connect(async (err) => {
       `CREATE TABLE IF NOT EXISTS finalistas(
           id_finalista int not null auto_increment primary key,
           nome varchar(45) DEFAULT NULL,
-          data_de_finalizacao DATETIME DEFAULT current_time,
+          data_de_finalizacao DATETIME DEFAULT current_timestamp(),
           id_usuario INT DEFAULT NULL,
           id_curso INT DEFAULT NULL
         ); 
