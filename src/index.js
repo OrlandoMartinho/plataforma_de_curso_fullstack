@@ -58,7 +58,7 @@ const HOST=process.env.HOST||servidor.HOST
 const PROTOCOL=process.env.PROTOCOL||servidor.PROTOCOL
 
 // Inicializando o servidor
-app.listen(PORT, () => {
+app.listen(PORT,HOST, () => {
   console.log(`Servidor rodando em ${PROTOCOL}://${HOST}:${PORT}/`);
   
 });

@@ -111,44 +111,40 @@ function preencherTabela(dados) {
         revokeButton.className = "button-revoke";
         revokeButton.addEventListener("click", () => {
           
-// Exibe um alerta confirm
-let confirmacao = window.confirm("Você tem certeza que deseja fazer isso?");
-
-// Verifica se o usuário clicou em OK ou Cancelar
-if (confirmacao) {
-    const requestOptions2 = {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            accessToken: localStorage.getItem("token"),
-            id_usuario:item.id_usuario
-        })
-    };
-    
-    fetch(`${base_url}usuarios/`, requestOptions2)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro ao fazer a requisição: ' + response.status);
+             // Exibe um alerta confirm
+            let confirmacao = window.confirm("Você tem certeza que deseja fazer isso?");
+            // Verifica se o usuário clicou em OK ou Cancelar
+            if (confirmacao) {
+                const requestOptions2 = {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        accessToken: localStorage.getItem("token"),
+                        id_usuario:item.id_usuario
+                    })
+                };
+                
+                fetch(`${base_url}usuarios/`, requestOptions2)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erro ao fazer a requisição: ' + response.status);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log(data)
+                        alert("Eliminado com sucesso")
+                        location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                    });
+            } else {
+                // Se o usuário clicou em Cancelar
+                alert("Ação cancelada!");
             }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data)
-            alert("Eliminado com sucesso")
-            location.reload();
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-        });
-} else {
-    // Se o usuário clicou em Cancelar
-    alert("Ação cancelada!");
-}
-
-
-            
         });
         buttonsCell.appendChild(revokeButton);
         tr.appendChild(buttonsCell);

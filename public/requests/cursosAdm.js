@@ -92,6 +92,48 @@ fetch(`${base_url}cursos/listar`, requestOptions2)
         const btnDownload = document.createElement('button');
         btnDownload.classList.add('btn-download');
         btnDownload.textContent = 'Eliminar';
+        btnDownload.addEventListener("click", () => {
+          
+            // Exibe um alerta confirm
+           let confirmacao = window.confirm("Você tem certeza que deseja fazer isso?");
+           // Verifica se o usuário clicou em OK ou Cancelar
+           if (confirmacao) {
+               const requestOptions2 = {
+                   method: 'DELETE',
+                   headers: {
+                       'Content-Type': 'application/json'
+                   },
+                   body: JSON.stringify({
+                       accessToken: localStorage.getItem("token"),
+                       id_curso:curso.id_curso
+                   })
+               };
+               
+               fetch(`${base_url}cursos/`, requestOptions2)
+                   .then(response => {
+                       if (!response.ok) {
+                           throw new Error('Erro ao fazer a requisição: ' + response.status);
+                       }
+                       return response.json();
+                   })
+                   .then(data => {
+                       console.log(data)
+                       alert("Eliminado com sucesso")
+                       location.reload();
+                   })
+                   .catch(error => {
+                       console.error('Erro:', error);
+                   });
+           } else {
+               // Se o usuário clicou em Cancelar
+               alert("Ação cancelada!");
+           }
+       });
+
+
+
+
+
         card.appendChild(btnDownload);
         card.addEventListener("click", function () {
             // Armazena o id_curso no localStorage quando o card é clicado

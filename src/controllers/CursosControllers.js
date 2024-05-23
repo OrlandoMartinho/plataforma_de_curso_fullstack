@@ -293,6 +293,46 @@ console.log(!await token.verificarTokenUsuario(accessToken))
  
             })
         })
+    },
+    eliminarCurso: async (req, res) => {
+        try {
+            const { accessToken,id_curso } = req.body;
+            
+            // Verifica se o ID do usuário é válido
+            if (!(await token.verificarTokenUsuario(accessToken))) {
+                return res.status(401).json({ mensagem: 'Token inválido' });
+            }
+
+         
+            // Query para eliminar o usuário da tabela usuarios
+            const deleteUsuarioQuery = 'DELETE FROM cursos WHERE id_curso = ?';
+    
+            // Executa a query para eliminar o usuário
+            db.query(deleteUsuarioQuery, [id_curso], (err, result) => {
+                if (err) {
+                    console.error('Erro ao eliminar usuário:', err);
+                    return res.status(500).json({ mensagem: 'Erro ao eliminar curso', erro: err });
+                }
+    
+                // Verifica se o usuário foi eliminado com sucesso
+                if (result.affectedRows === 0) {
+                    return res.status(404).json({ mensagem: 'curso não encontrado' });
+                }
+              const email=token.usuarioEmail(accessToken)
+              console.log(email)
+                db.query('DELETE FROM codigos_verificacao where email =  ?',[email],(err,result)=>{
+                    if(err){
+                        console.log('Erro'+err)
+                        return res.status(500).json({ mensagem: 'Erro interno do servidor' });
+                    }
+                })
+            
+             return  res.json({ mensagem: 'Curso eliminado com sucesso' });
+            });
+        } catch (err) {
+            console.error('Erro ao eliminar usuário:', err);
+           return res.status(500).json({ mensagem: 'Erro interno do servidor ao eliminar usuário' });
+        }
     }
     
 
