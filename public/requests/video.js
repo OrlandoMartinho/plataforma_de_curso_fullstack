@@ -10,6 +10,7 @@ function createVideoElement(titulo, video, curso) {
     videoCenterDiv.className = 'video-center';
 
     const imgElement = document.createElement('img');
+    imgElement.className = 'imgVideo';
     imgElement.src = '../assets/icon/video.png';
     imgElement.alt = 'imagem';
 

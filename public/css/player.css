@@ -204,8 +204,8 @@ video{
 }
 
 .circle {
-    width: 30px;
-    height: 30px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background-color: #0065D4;
     margin-right: 10px;
@@ -220,7 +220,8 @@ video{
 .video-center img {
     width: 20px;
     height: 20px;
-    margin-right: 10px;
+    margin-right: 20px;
+    
 }
 
 .video p {
@@ -245,4 +246,7 @@ video{
     border: 1px solid #ddd;
     border-radius: 4px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+.imgVideo{
+width: 20px;
 }
