@@ -101,9 +101,6 @@ fetch(`${base_url}cursos/listar_curso_assinado`, requestOptions2)
         card.addEventListener("click", function () {
             // Armazena o id_curso no localStorage quando o card é clicado
             localStorage.setItem("id_curso", curso.id_curso);
-            console.log(curso)
-
-            alert(localStorage.getItem("token"))
             window.location.href = "cursoView.html";
       
             

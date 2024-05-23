@@ -160,6 +160,7 @@ nav ul li a{
     cursor:pointer;
 }
 .card{
+    cursor: pointer;
     width:27.6rem;
     background:url("../assets/icon/backgroundCard.png");
     background-size: cover;
