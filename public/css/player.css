@@ -163,7 +163,7 @@ video{
 }
 
 .play-list {
-    width: 300px;
+    width: 100px;
     padding: 20px;
 }
 
@@ -183,4 +183,66 @@ video{
 .aula_titulo{
     color: #0065D4;
     font-size:20px;
+}
+
+#videos-container .video {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #0065D4;
+    border-radius: 4px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background-color: #fff;
+}
+
+#videos-container .video:hover {
+    transform: scale(1.02);
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #0065D4;
+    margin-right: 10px;
+}
+
+.video-center {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+}
+
+.video-center img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.video p {
+    margin: 0;
+}
+
+/* Estilo adicional para o vídeo principal */
+#main-video {
+    display: block;
+    margin: 20px auto;
+
+}
+#videos-container {
+    margin-bottom: 20px;
+}
+
+#main-video-container {
+    text-align: center;
+}
+
+#main-video-container video {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
 }
