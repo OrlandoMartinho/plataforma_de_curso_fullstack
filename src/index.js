@@ -56,7 +56,7 @@ app.post('/', (req, res) => {
 const PORT = process.env.PORT||servidor.PORT;
 const HOST=process.env.HOST||servidor.HOST
 const PROTOCOL=process.env.PROTOCOL||servidor.PROTOCOL
-finalistasController.addFinalista()
+
 // Inicializando o servidor
 app.listen(PORT, () => {
   console.log(`Servidor rodando em ${PROTOCOL}://${HOST}:${PORT}/`);
