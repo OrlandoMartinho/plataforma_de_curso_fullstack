@@ -6,8 +6,8 @@ const enviarMensagem = async (destinatario,codigo,res) => {
     const mailOptions = {
         from: credenciais.email,
         to: destinatario, 
-        subject: "Código de confirmação do Tub Saude", // Assunto
-        html: `<h1 style="font-weight:normal;">Bem vindo ao nosso app de consultas online, o seu código de confirmação é <strong>${codigo}</strong></h1>`
+        subject: "Código de confirmação da ALF", // Assunto
+        html: `<h1 style="font-weight:normal;">Bem vindo a nossa plataforma de curso, o seu código de confirmação é <strong>${codigo}</strong></h1>`
     };
 
     
