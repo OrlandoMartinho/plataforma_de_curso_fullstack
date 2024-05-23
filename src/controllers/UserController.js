@@ -419,11 +419,12 @@ const UsersController = {
             if (!(await token.verificarTokenUsuario(accessToken))) {
                 return res.status(401).json({ mensagem: 'Token inválido' });
             }
-            
+
             let idUser;
-            if(!id_usuario){
+           
+            if(id_usuario){
                 idUser = id_usuario;
-            }else{
+            }else{ 
                 idUser= token.usuarioId(accessToken)
             }
             // Query para eliminar o usuário da tabela usuarios

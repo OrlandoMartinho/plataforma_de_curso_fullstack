@@ -93,27 +93,24 @@ function preencherTabela(dados) {
         const tbody = document.getElementById("table-body");
         const linhas = tbody.querySelectorAll("tr"); // Seleciona todas as linhas da tabela
         
-        let nome=item.nome;
-        if(nome){
-            nome=item.email
-        }
+       
         // Remove cada linha da tabela
 
         if(item.id_usuario!=1){
+            let nome=item.nome;
+            if(nome){
+                nome=item.email.split('@')[0]
+            }
         tr.innerHTML = `
             <td>${item.id_usuario-1}</td>
             <td>${nome}</td>
             <td>${item.email}</td>
-          
         `;
-
         const revokeButton = document.createElement("button");
         revokeButton.textContent = "Eliminar";
         revokeButton.className = "button-revoke";
         revokeButton.addEventListener("click", () => {
           
-
-
 // Exibe um alerta confirm
 let confirmacao = window.confirm("Você tem certeza que deseja fazer isso?");
 
@@ -158,9 +155,9 @@ if (confirmacao) {
         tbody.appendChild(tr);
 
     }
-
+ 
     });
-}
+} 
 
 function preencherTabela2(dados) {
     const tbody = document.getElementById("table-body");
