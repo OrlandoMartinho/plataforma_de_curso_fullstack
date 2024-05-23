@@ -123,8 +123,10 @@ nav ul li a{
     border-radius:1rem;
     position: relative;
 }
-.btn-donwload {
-    position: absolute;
+
+.btn-download{
+    margin-top: 20vh;
+    margin-left: -18vw;
     bottom: -4rem;
     border-radius:.9rem;
     padding: 2rem;
@@ -133,7 +135,9 @@ nav ul li a{
     cursor: pointer;
     background-color: var(--color-secondary);
     color:var(--color-white);
+
 }
+
 .certificadoView.on{
     display: block;
     position: fixed;

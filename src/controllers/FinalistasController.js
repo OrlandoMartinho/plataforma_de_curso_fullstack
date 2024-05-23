@@ -28,70 +28,53 @@ const upload = multer({
 const finalistasController = {
     
     addFinalista:async()=>{
- 
         const selectQueryVideosAssistidos = 'SELECT * FROM videos_assistidos WHERE id_usuario = ? AND id_curso = ?';
         const selectQueryVideos = 'SELECT * FROM videos WHERE id_curso = ?';
         const selectQueryCursos = 'SELECT * FROM cursos';
         const selectQueryUsuarios = 'SELECT * FROM usuarios';
         const insertQueryFinalista = 'INSERT INTO finalistas (nome, id_usuario, id_curso) VALUES (?, ?, ?)';
-        
-        db.query(selectQueryCursos, (err, cursosResults) => {
-            if (err) {
-                console.log("Erro:", err.message);
-                return;
-            }
-        
-            cursosResults.forEach(curso => {
+        const selectQueryFinalistas = 'SELECT * FROM finalistas WHERE id_usuario = ? AND id_curso = ?';
+    
+        try {
+            // Adicionando a interface de Promise ao db
+            const dbPromise = db.promise();
+    
+            // Buscar todos os cursos
+            const [cursosResults] = await dbPromise.query(selectQueryCursos);
+    console.log(cursosResults)
+            for (const curso of cursosResults) {
                 const id_curso = curso.id_curso;
-        
-                db.query(selectQueryVideos, [id_curso], (err, videosResults) => {
-                    if (err) {
-                        console.log("Erro:", err.message);
-                        return;
-                    }
-        
-                    db.query(selectQueryUsuarios, (err, usuariosResults) => {
-                        if (err) {
-                            console.log("Erro:", err.message);
-                            return;
+                // Buscar todos os vídeos do curso
+                const [videosResults] = await dbPromise.query(selectQueryVideos, [id_curso]);
+                // Buscar todos os usuários
+                const [usuariosResults] = await dbPromise.query(selectQueryUsuarios);
+    
+                for (const usuario of usuariosResults) {
+                    // Buscar vídeos assistidos pelo usuário para o curso específico
+                    const [videosAssistidosResults] = await dbPromise.query(selectQueryVideosAssistidos, [usuario.id_usuario, id_curso]);
+    
+                    // Verificar se o usuário assistiu a todos os vídeos do curso
+                    if (videosAssistidosResults.length === videosResults.length) {
+                        // Verificar se o usuário já é finalista do curso
+                        const [finalistasResults] = await dbPromise.query(selectQueryFinalistas, [usuario.id_usuario, id_curso]);
+    
+                        if (finalistasResults.length === 0) {
+                            // Adicionar o usuário como finalista
+                            await dbPromise.query(insertQueryFinalista, [usuario.nome, usuario.id_usuario, id_curso]);
+    
+                            const titulo = "Finalista";
+                            const notificacao = `O usuário ${usuario.nome} acabou de finalizar o curso ${curso.titulo}. Código do curso: ${id_curso}`;
+                            console.log("Novo finalista adicionado com sucesso");
+    
+                            // Notificar o usuário (presumindo que existe uma função notify.addNotificacao)
+                            notify.addNotificacao(notificacao, 1, titulo);
                         }
-        
-                        usuariosResults.forEach(usuario => {
-                            db.query(selectQueryVideosAssistidos, [usuario.id_usuario, id_curso], (err, videosAssistidosResults) => {
-                                if (err) {
-                                    console.log("Erro:", err.message);
-                                    return;
-                                }
-                                
-                                if (videosAssistidosResults.length === videosResults.length) {
-                                    db.query('SELECT * FROM finalistas WHERE id_usuario = ? AND id_curso = ?', [usuario.id_usuario, id_curso], (err, finalistasResults) => {
-                                        if (err) {
-                                            console.log("Erro:", err.message);
-                                            return;
-                                        }
-        
-                                        if (finalistasResults.length === 0) {
-                                            db.query(insertQueryFinalista, [usuario.nome, usuario.id_usuario, id_curso], (err, insertResults) => {
-                                                if (err) {
-                                                    console.log("Erro:", err.message);
-                                                    return;
-                                                }
-        
-                                                const titulo = "Finalista";
-                                                const notificacao = "O usuário " + usuario.nome + " acabou de finalizar o curso " + curso.titulo + ". Código do curso: " + id_curso;
-                                                console.log("Novo finalista adicionado com sucesso");
-                                                notify.addNotificacao(notificacao, 1, titulo);
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-                        });
-                    });
-                });
-            });
-        });
-        
+                    }
+                }
+            }
+        } catch (err) {
+            console.error("Erro:", err.message);
+        }
     }
     ,
     cadastrarCertificado:async(req,res)=>{
@@ -104,10 +87,10 @@ const finalistasController = {
                 }
                
              
-                const {accessToken,id_usuario} = req.body;
+                const {accessToken,id_finalista,id_usuario} = req.body;
                 const arquivo = req.file 
                 // Verificar se todos os campos obrigatórios estão presentes
-                if (!id_finalista||!accessToken) {
+                if (!id_finalista||!accessToken||!id_usuario) {
                    return res.status(400).json({ Mensagem: "Campos incompletos" });
                 }
        
@@ -122,8 +105,8 @@ const finalistasController = {
                     return res.status(400).json({ mensagem: 'Formato de arquivo inválido. Apenas arquivos PNG, JPG, JPEG, PDF, TXT, MP3, WAV, M4A, DOC e DOCX são permitidos' });
                 }
                 fs.writeFileSync(`./uploads/certificados/${arquivo.originalname}`, arquivo.buffer);
-                const updateQuery = 'INSERT INTO certificados  (id_usuario,nome_arquivo)values(?,?)';
-                db.query(updateQuery,[id_usuario,arquivo.originalname.toLowerCase()],(err,result)=>{
+                const updateQuery = 'INSERT INTO certificados  (id_usuario,nome_arquivo,id_finalista)values(?,?,?)';
+                db.query(updateQuery,[id_usuario,arquivo.originalname.toLowerCase(),id_finalista],(err,result)=>{
                 
                    if(err){
                      console.log("Erro:"+err)
@@ -141,7 +124,7 @@ const finalistasController = {
 
                    const notificacao = "Voce recebeu um novo certificado";
                    const titulo ="Certificado" 
-                   notify.addNotificacao(notificacao,results[0].id_usuario,titulo);
+                   notify.addNotificacao(notificacao,id_usuario,titulo);
                    return res.status(201).json({ Mensagem: "Certificado cadastrado com sucesso"}); 
 
                    })
@@ -184,12 +167,12 @@ const finalistasController = {
     retornarCertificado: async (req, res)=> {
       try {
         const { accessToken,nomeDoArquivo } = req.body;
-
+      
         if (!accessToken || !nomeDoArquivo) {
             return res.status(400).json({ Mensagem: "Campos incompletos" });
         }
 
-        if (!(await token.verificarTokenUsuario(accessToken)) || token.usuarioId(accessToken) != 1) {
+        if (!(await token.verificarTokenUsuario(accessToken)) || token.usuarioId(accessToken) == 1) {
             return res.status(401).json({ mensagem: 'Token inválido' });
         }
 

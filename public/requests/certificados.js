@@ -46,14 +46,15 @@ fetch(base_url + 'finalistas/obter_todos_certificados', {
 
         // Adiciona o evento de clique ao botão de download
         btnDownload.addEventListener('click', () => {
+        
             fetch(`${base_url}finalistas/obter_certificado`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                  accessToken: localStorage.getItem("token"),
-                  nomeDoArquivo:certificado.nome_do_arquivo
+                    accessToken: localStorage.getItem("token"),
+                    nomeDoArquivo:certificado.nome_arquivo
                 })
               })
                 .then(function(response) {
@@ -67,13 +68,13 @@ fetch(base_url + 'finalistas/obter_todos_certificados', {
                   var videoUrl = URL.createObjectURL(videoBlob);
                   var downloadLink = document.createElement('a');
                   downloadLink.href = videoUrl;
-                  downloadLink.download = certificado.nome_do_arquivo; 
+                  downloadLink.download =certificado.nome_arquivo; 
                   
                   // Aciona o evento de clique no link
                   downloadLink.click();
                   
                   // Libera o URL criado
-                  URL.revokeObjectURL(videoUrl);
+                    URL.revokeObjectURL(videoUrl);
                     alert("Aguarde até o download terminar")
         
                 })

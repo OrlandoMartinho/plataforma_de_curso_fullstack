@@ -94,7 +94,7 @@ fetch(`${base_url}cursos/listar`, requestOptions2)
             // Armazena o id_curso no localStorage quando o card é clicado
             localStorage.setItem("id_curso", curso.id_curso);
             console.log("id_curso", curso.id_curso, "armazenado no localStorage");
-            window.location.href = "cursoView.html";
+           // window.location.href = "cursoView.html";
         });
     
         return card;
