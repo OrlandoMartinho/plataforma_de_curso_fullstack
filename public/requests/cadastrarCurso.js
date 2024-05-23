@@ -61,6 +61,7 @@ document.querySelector('#cadastrar').addEventListener("click", async () => {
 
         }
         alert("Curso cadastrado com sucesso")
+        location.reload();
     } catch (error) {
         console.error('Erro:', error);
     }

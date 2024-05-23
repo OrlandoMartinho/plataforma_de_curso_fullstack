@@ -413,18 +413,24 @@ const UsersController = {
     ,
     eliminarUsuario: async (req, res) => {
         try {
-            const { accessToken } = req.body;
-            const id_usuario = await token.usuarioId(accessToken);
+            const { accessToken,id_usuario } = req.body;
+            
             // Verifica se o ID do usuário é válido
-            if (!id_usuario || !(await token.verificarTokenUsuario(accessToken))||id_usuario==1) {
+            if (!(await token.verificarTokenUsuario(accessToken))) {
                 return res.status(401).json({ mensagem: 'Token inválido' });
             }
-    
+            
+            let idUser;
+            if(!id_usuario){
+                idUser = id_usuario;
+            }else{
+                idUser= token.usuarioId(accessToken)
+            }
             // Query para eliminar o usuário da tabela usuarios
             const deleteUsuarioQuery = 'DELETE FROM usuarios WHERE id_usuario = ?';
     
             // Executa a query para eliminar o usuário
-            db.query(deleteUsuarioQuery, [id_usuario], (err, result) => {
+            db.query(deleteUsuarioQuery, [idUser], (err, result) => {
                 if (err) {
                     console.error('Erro ao eliminar usuário:', err);
                     return res.status(500).json({ mensagem: 'Erro ao eliminar usuário', erro: err });

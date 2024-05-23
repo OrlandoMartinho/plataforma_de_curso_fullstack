@@ -113,7 +113,7 @@ const videosControllers ={
         
         if(!accessToken||!id_curso||!id_video){
             return res.status(400).json({Mensagem:"Campos incompletos"})
-        }
+        } 
 
         if(await !token.verificarEmailUsuario(accessToken)||token.usuarioId(accessToken)==1){
             return res.status(401).json({Mensagem:"Token inválido"})

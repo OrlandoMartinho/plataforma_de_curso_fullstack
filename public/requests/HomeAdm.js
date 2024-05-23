@@ -93,18 +93,68 @@ function preencherTabela(dados) {
         const tbody = document.getElementById("table-body");
         const linhas = tbody.querySelectorAll("tr"); // Seleciona todas as linhas da tabela
         
+        let nome=item.nome;
+        if(nome){
+            nome=item.email
+        }
         // Remove cada linha da tabela
 
         if(item.id_usuario!=1){
         tr.innerHTML = `
             <td>${item.id_usuario-1}</td>
-            <td>${item.nome}</td>
+            <td>${nome}</td>
             <td>${item.email}</td>
-            <td>${item.numero_de_telefone}</td>
-            <td>${item.numero_do_bi}</td>
+          
         `;
 
+        const revokeButton = document.createElement("button");
+        revokeButton.textContent = "Eliminar";
+        revokeButton.className = "button-revoke";
+        revokeButton.addEventListener("click", () => {
+          
 
+
+// Exibe um alerta confirm
+let confirmacao = window.confirm("Você tem certeza que deseja fazer isso?");
+
+// Verifica se o usuário clicou em OK ou Cancelar
+if (confirmacao) {
+    const requestOptions2 = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            accessToken: localStorage.getItem("token"),
+            id_usuario:item.id_usuario
+        })
+    };
+    
+    fetch(`${base_url}usuarios/`, requestOptions2)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao fazer a requisição: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data)
+            alert("Eliminado com sucesso")
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+        });
+} else {
+    // Se o usuário clicou em Cancelar
+    alert("Ação cancelada!");
+}
+
+
+            
+        });
+        buttonsCell.appendChild(revokeButton);
+        tr.appendChild(buttonsCell);
         tbody.appendChild(tr);
 
     }
