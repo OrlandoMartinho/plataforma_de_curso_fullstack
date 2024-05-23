@@ -155,16 +155,24 @@ video{
 .Player {
     flex: 1;
     padding: 20px;
+    
 }
 
 #main-video {
     width: 55vw;
     height: 55vh;
+    cursor: pointer;
+    padding: 10px;
+    border: 1px solid #0065D4;
+    border-radius: 4px;
+    box-shadow: #414141 1px 1px ;
+    margin-bottom: 10px;
 }
 
 .play-list {
     width: 100px;
     padding: 20px;
+    
 }
 
 .play-list-item {
