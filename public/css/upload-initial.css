@@ -43,6 +43,18 @@ nav{
     color:var(--color-primary);
     padding: 7rem 0rem 3rem 0rem;
 }
+
+.btn-download{
+  
+ 
+    border-radius:.9rem;
+    padding: 2rem;
+    width: 85%;
+    border: none;
+    cursor: pointer;
+    background-color: #ff0000;
+    color:var(--color-white);
+}
 nav ul li a{
     font-size:1.4rem;
     color:var(--color-black);

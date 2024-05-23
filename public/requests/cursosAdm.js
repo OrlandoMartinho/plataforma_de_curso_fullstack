@@ -89,7 +89,10 @@ fetch(`${base_url}cursos/listar`, requestOptions2)
         `;
         card.dataset.modo = curso.modo; // Adiciona o atributo data-modo
         card.dataset.modulo = curso.modulo; // Adiciona o atributo data-modulo
-    
+        const btnDownload = document.createElement('button');
+        btnDownload.classList.add('btn-download');
+        btnDownload.textContent = 'Eliminar';
+        card.appendChild(btnDownload);
         card.addEventListener("click", function () {
             // Armazena o id_curso no localStorage quando o card é clicado
             localStorage.setItem("id_curso", curso.id_curso);
