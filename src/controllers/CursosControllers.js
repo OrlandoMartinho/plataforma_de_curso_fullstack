@@ -47,14 +47,11 @@ const cursosControllers ={
         if(!accessToken||!id_curso){
             return res.status(400).json({Mensagem:"Campos incompletos"})
         }
-
+console.log(!await token.verificarTokenUsuario(accessToken))
         if(!await token.verificarTokenUsuario(accessToken)){
             return res.status(401).json({Mensagem:"Token invalido"})
         }
-        let modo
-        if(token.usuarioAssinado(accessToken)!=2){
-            modo = 'gratuito'
-        }
+      
 
         const select_query_cursos = 'SELECT * FROM cursos WHERE id_curso = ? '
         const select_query_video  = 'SELECT * FROM videos WHERE id_curso = ?'
@@ -64,10 +61,6 @@ const cursosControllers ={
             if(err){
                 console.log("Erro:"+err.message)
                 return res.status(500).json({Mensagem:"Erro interno do servidor"})
-            }
-
-            if(result[0].modo=='pago' && modo=='gratuito'){
-                return res.status(401).json("Seja um assinante para obter este curso")
             }
 
             db.query(select_query_video,[id_curso],(errr,results)=>{

@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    
     const requestOptions2 = {
         method: 'POST',
         headers: {
@@ -20,38 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(data => {
     
-            const videoData = [
-                {
-                    title: "Primeiros Passos",
-                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    videoUrl: "../assets/video/video.mp4",
-                    author: {
-                        name: "Diego Paulo",
-                        role: "Formador",
-                        avatar: "public/assets/img/user1.jpg"
-                    }
-                },
-                {
-                    title: "Aprendizado Básico",
-                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    videoUrl: "../assets/videos/video.mp4",
-                    author: {
-                        name: "Diego Paulo",
-                        role: "Formador",
-                        avatar: "../assets/img/user1.jpg"
-                    }
-                },
-                {
-                    title: "Intermediário",
-                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    videoUrl: "../assets/videos/video.mp4",
-                    author: {
-                        name: "Diego Paulo",
-                        role: "Formador",
-                        avatar: "../assets/img/user1.jpg"
-                    }
-                }
-            ];
         
             const playListContainer = document.getElementById('play-list');
             const mainVideo = document.getElementById('main-video');
@@ -61,12 +28,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const videoDescription = document.getElementById('video-description');
             mainVideo.controls = false;
             mainVideo.addEventListener('ended', function() {
-               
                 const requestOptions3 = {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
+                
                     body: JSON.stringify({
                         accessToken: localStorage.getItem("token"),
                         id_curso:localStorage.getItem("id_curso"),

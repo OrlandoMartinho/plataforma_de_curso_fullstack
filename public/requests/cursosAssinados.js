@@ -1,3 +1,4 @@
+
 // Selecionar o elemento onde o perfil será adicionado
 const profileContainer = document.querySelector('.profile-Icon');
 
@@ -96,15 +97,14 @@ fetch(`${base_url}cursos/listar_curso_assinado`, requestOptions2)
                 </div>
             </div>
         `;
-        card.dataset.modo = curso.modo; // Adiciona o atributo data-modo
-        card.dataset.modulo = curso.modulo; // Adiciona o atributo data-modulo
-    
+        
         card.addEventListener("click", function () {
             // Armazena o id_curso no localStorage quando o card é clicado
             localStorage.setItem("id_curso", curso.id_curso);
             console.log(curso)
-        
-                window.location.href = "cursoView.html";
+
+            alert(localStorage.getItem("token"))
+            window.location.href = "cursoView.html";
       
             
         });

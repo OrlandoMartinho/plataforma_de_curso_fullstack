@@ -29,88 +29,69 @@ const finalistasController = {
     
     addFinalista:async()=>{
  
-        const selectQueryVideosAssistidos='SELECT * FROM videos_assistidos WHERE id_usuario=?';
-        const selectQueryVideos='SELECT * FROM videos WHERE id_curso = ?';
-        const selectQueryCursos ='SELECT * FROM cursos';
-        const selectQueryUsuarios='SELECT * FROM usuarios';
-        const insertQueryFinalista='INSERT INTO finalistas(nome,id_usuario,id_curso) VALUES (?,?,?)';
-    
-        db.query(selectQueryCursos,(err,results)=>{
-            if(err){
-                console.log("Erro:"+err.message);
+        const selectQueryVideosAssistidos = 'SELECT * FROM videos_assistidos WHERE id_usuario = ? AND id_curso = ?';
+        const selectQueryVideos = 'SELECT * FROM videos WHERE id_curso = ?';
+        const selectQueryCursos = 'SELECT * FROM cursos';
+        const selectQueryUsuarios = 'SELECT * FROM usuarios';
+        const insertQueryFinalista = 'INSERT INTO finalistas (nome, id_usuario, id_curso) VALUES (?, ?, ?)';
+        
+        db.query(selectQueryCursos, (err, cursosResults) => {
+            if (err) {
+                console.log("Erro:", err.message);
                 return;
             }
-            if(results.length!=0){
-                const cursos =results;
-    
-                for (let i = 0; i < cursos.length; i++) {
-                   
-                    db.query(selectQueryVideos,[cursos[i].id],(errr,resultss)=>{
-                        if(errr){
-                            console.log("Erro:"+errr.message);
+        
+            cursosResults.forEach(curso => {
+                const id_curso = curso.id_curso;
+        
+                db.query(selectQueryVideos, [id_curso], (err, videosResults) => {
+                    if (err) {
+                        console.log("Erro:", err.message);
+                        return;
+                    }
+        
+                    db.query(selectQueryUsuarios, (err, usuariosResults) => {
+                        if (err) {
+                            console.log("Erro:", err.message);
                             return;
                         }
-                    
-                        if(resultss.length!=0){
-                            const videos=resultss;
-                            db.query(selectQueryUsuarios,(errrr,resultsss)=>{
-                                if(errrr){
-                                    console.log("Erro:",errrr.message);
+        
+                        usuariosResults.forEach(usuario => {
+                            db.query(selectQueryVideosAssistidos, [usuario.id_usuario, id_curso], (err, videosAssistidosResults) => {
+                                if (err) {
+                                    console.log("Erro:", err.message);
                                     return;
                                 }
-    
-                                if(resultsss.length!=0){
-                                    const usuarios=resultsss;
-                                    for (let y = 0; y < usuarios.length; y++) {
-    
-                                        db.query(selectQueryVideosAssistidos,[usuarios[y].id],(errrrr,resultssss)=>{
-                                            if(errrrr){
-                                                console.log("Erro:"+errrrr.message);
-                                                return;
-                                            }
-                                        
-                                            if(resultssss.length!=0){
-                                                const videos_assistidos=resultssss;
-                                                if(videos_assistidos.length==videos.length){
-                                                    
-                                                    const selectFinalistas='SELECT * FROM finalistas WHERE id_usuario=? AND id_curso=?';
-                                                    db.query(selectFinalistas,[usuarios[y].id, cursos[i].id],(erro,resultado)=>{
-                                                        if(erro){
-                                                            console.log("Erro:",erro.message);
-                                                            return;
-                                                        }
-    
-                                                        if(resultado.length==0){
-                                                            db.query(insertQueryFinalista,[usuarios[y].nome,usuarios[y].id,cursos[i].id],(errrrrr,resultsssss)=>{
-    
-                                                                if(errrrrr){
-                                                                    console.log("Erro:",errrrrr.message);
-                                                                    return;                                                       
-                                                                }
-                                                                const titulo="Finalista";
-                                                                const notificacao ="O usuário "+usuarios[y].nome+" acabou de finalizar o curso "+cursos[i].titulo+". Código do curso: "+cursos[i].id;
-                                                                console.log("Novo finalista adicionado com sucesso");
-                                                                notify.addNotificacao(notificacao,1,titulo);
-                                                            
-                                                            });
-                                                        }
-                                                    });  
+                                
+                                if (videosAssistidosResults.length === videosResults.length) {
+                                    db.query('SELECT * FROM finalistas WHERE id_usuario = ? AND id_curso = ?', [usuario.id_usuario, id_curso], (err, finalistasResults) => {
+                                        if (err) {
+                                            console.log("Erro:", err.message);
+                                            return;
+                                        }
+        
+                                        if (finalistasResults.length === 0) {
+                                            db.query(insertQueryFinalista, [usuario.nome, usuario.id_usuario, id_curso], (err, insertResults) => {
+                                                if (err) {
+                                                    console.log("Erro:", err.message);
+                                                    return;
                                                 }
-                                            } 
-                                       });
-    
-                                    }
+        
+                                                const titulo = "Finalista";
+                                                const notificacao = "O usuário " + usuario.nome + " acabou de finalizar o curso " + curso.titulo + ". Código do curso: " + id_curso;
+                                                console.log("Novo finalista adicionado com sucesso");
+                                                notify.addNotificacao(notificacao, 1, titulo);
+                                            });
+                                        }
+                                    });
                                 }
-                               
                             });
-                        }
-                       
+                        });
                     });
-                }
-            }
-            console.log("Finalistas verificados");
-            return;
+                });
+            });
         });
+        
     }
     ,
     cadastrarCertificado:async(req,res)=>{
