@@ -13,7 +13,7 @@ const fs=require('fs');
 const salt = bcrypt.genSaltSync(saltRounds);
 const notify = require('../controllers/NotificacoesController');
 const data_assinatura=require('../utils/converterData')
-const finalistasController=require('../controllers/FinalistasController')
+
 
 const upload = multer({
     limits: { fileSize: 1 * 1024 * 1024 }, // Define o limite de tamanho do arquivo para 1MB
@@ -29,7 +29,7 @@ const upload = multer({
 
 const UsersController = {
     receberCodigo: async (req, res) => {
-        finalistasController.addFinalista()
+       
         const { email } = req.body;
  
         if (!email) {
@@ -60,7 +60,7 @@ const UsersController = {
     // Método para autenticar usuário com o código de verificação
     cadastrarUsuario: async (req, res) => {
         const { email, codigo,nome, senha} = req.body;
-        finalistasController.addFinalista()
+
         // Verificar se todos os campos obrigatórios estão presentes
         if (!nome || !senha || !email || !codigo) {
             return res.status(400).json({ Mensagem: "Campos incompletos" });
@@ -128,7 +128,7 @@ const UsersController = {
     //Função para autenticar usuário 
     autenticarUsuario: async (req, res) => {
         const { email, senha } = req.body;
-        finalistasController.addFinalista()
+
 
         // Verificar se todos os campos obrigatórios estão presentes
         if (!email || !senha) {
@@ -196,7 +196,7 @@ const UsersController = {
     ,
     //Funsão para editar Usuário
     editarUsuario:async(req,res)=>{
-        finalistasController.addFinalista()
+
         const {accessToken,nome,genero, data_de_nascimento,numero_de_telefone } = req.body;
     
          // Verificar se todos os campos obrigatórios estão presentes
@@ -363,10 +363,8 @@ const UsersController = {
             return res.status(500).send('Erro ao enviar arquivo, verifique o tamanho');
         }
     }
-    
     ,
     obterTodosUsuarios:async(req,res)=>{
-        finalistasController.addFinalista
         const {accessToken} = req.body
 
        if(!accessToken){
@@ -390,7 +388,6 @@ const UsersController = {
 
     },
     obterTodosUsuariosAssinados:async(req,res)=>{
-        finalistasController.addFinalista
         const {accessToken} = req.body
 
        if(!accessToken){
@@ -418,7 +415,6 @@ const UsersController = {
         try {
             const { accessToken } = req.body;
             const id_usuario = await token.usuarioId(accessToken);
-            finalistasController.addFinalista()
             // Verifica se o ID do usuário é válido
             if (!id_usuario || !(await token.verificarTokenUsuario(accessToken))||id_usuario==1) {
                 return res.status(401).json({ mensagem: 'Token inválido' });
@@ -458,7 +454,6 @@ const UsersController = {
     },
     obterUsuarioPorAccessToken: async (req, res) => {
         const { accessToken } = req.body;
-        finalistasController.addFinalista()
         if (!accessToken || ! await (token.verificarTokenUsuario(accessToken)) ) {
             return res.status(401).json({ mensagem: 'Token inválido' });
         }
@@ -477,7 +472,6 @@ const UsersController = {
         });
     },
     receberCodigoParaResetarSenha:async (req,res)=>{
-        finalistasController.addFinalista()
         const {email} = req.body;
         if(!email){
             return res.status(400).json({Mensagem:"Email inválido"})
@@ -522,7 +516,6 @@ const UsersController = {
     },
     resetarSenha:async (req,res)=>{
         const {email,codigo,nova_senha}=req.body
-        finalistasController.addFinalista()
         if(!email||!codigo||!nova_senha){
 
             res.status(400).json({Mensagem:"Campos incompletos"})
@@ -622,7 +615,6 @@ const UsersController = {
                     
     },
     confirmarAssinatura:async(req,res)=>{
-        finalistasController.addFinalista()
         const {accessToken,id_usuario} = req.body;
     
         // Verificar se todos os campos obrigatórios estão presentes
@@ -681,7 +673,6 @@ const UsersController = {
     },
     retornarComprovativo: async (req, res) => {
         try {
-            finalistasController.addFinalista();
     
             const { accessToken,nomeDoArquivo} = req.body;
        
@@ -736,7 +727,6 @@ const UsersController = {
     }
     ,
     revogarAssinatura:async(req,res)=>{
-        finalistasController.addFinalista()
         const {accessToken,id_usuario} = req.body;
     
         // Verificar se todos os campos obrigatórios estão presentes
@@ -795,7 +785,6 @@ const UsersController = {
     }
     ,
     pesquisarUsuario:async(req,res)=>{
-        finalistasController.addFinalista
         const {accessToken, valor} = req.body;
         console.log(valor)
 
@@ -826,7 +815,6 @@ const UsersController = {
         });
     },
     reverterAssinatura:async(req,res)=>{
-        finalistasController.addFinalista()
         const {accessToken,id_usuario} = req.body;
     
         // Verificar se todos os campos obrigatórios estão presentes

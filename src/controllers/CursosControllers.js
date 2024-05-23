@@ -4,12 +4,11 @@ const fs=require('fs')
 const token = require('../utils/token');
 const db=require('../config/dbConfig');
 const notify=require('../controllers/NotificacoesController')
-const finalistasController=require('../controllers/FinalistasController')
 
 const cursosControllers ={
 
     cadastrarCurso:async (req,res)=>{
-        finalistasController.addFinalista
+
         const {accessToken,nome_do_formador,titulo,categoria,modo,descricao,modulo}=req.body
 
         if(!accessToken||!nome_do_formador||!titulo||!categoria||!modo||!descricao||!modulo){
@@ -41,7 +40,7 @@ const cursosControllers ={
         
     },
     obterUmCursoPorId:async(req,res)=>{
-        finalistasController.addFinalista()
+
         const { accessToken ,id_curso} = req.body;
 
         if(!accessToken||!id_curso){
@@ -77,7 +76,7 @@ console.log(!await token.verificarTokenUsuario(accessToken))
         })
     },
     obterTodosCursos:async (req,res)=>{
-        finalistasController.addFinalista
+
       const { accessToken } = req.body;
 
         if(!accessToken){
@@ -156,7 +155,6 @@ console.log(!await token.verificarTokenUsuario(accessToken))
         });
     },
     cadastrarCursoAssinado:async (req,res)=>{
-        finalistasController.addFinalista
         const {accessToken,id_curso,id_usuario}=req.body
 
         if(!accessToken||!id_curso||!id_usuario){
@@ -251,7 +249,6 @@ console.log(!await token.verificarTokenUsuario(accessToken))
         );
       },
     obterUmCursoAssinadoPorId:async(req,res)=>{
-        finalistasController.addFinalista()
         const { accessToken ,id_curso_assinado} = req.body;
 
         if(!accessToken||!id_curso_assinado){
