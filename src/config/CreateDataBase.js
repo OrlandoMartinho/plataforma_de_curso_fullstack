@@ -195,6 +195,7 @@ connection.connect(async (err) => {
               }
                                                      
               console.log('Adm atualizado com sucesso.');
+              
           });
           }else{
  

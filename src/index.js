@@ -12,7 +12,6 @@ app.use(cors());
 
 
 
-
 // Importar as rotas
 const usersRoutes = require('./routes/UserRoutes');
 const notificacoesRoutes = require('./routes/NotificacoesRoutes');
@@ -35,6 +34,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname,'..', 'public', 'index.html'));
 });
 
+
 app.post('/', (req, res) => {
   const {accessToken}=req.body
     token.verificarTokenUsuario(accessToken).then(resultado => {
@@ -46,7 +46,7 @@ app.post('/', (req, res) => {
      })
     .catch(erro => {
       console.error(erro);
-      res.status(500).json({mensagem:"Erro interno do servidor"})
+       res.status(500).json({mensagem:"Erro interno do servidor"})
      });
 
 });
@@ -60,4 +60,5 @@ finalistasController.addFinalista()
 // Inicializando o servidor
 app.listen(PORT, () => {
   console.log(`Servidor rodando em ${PROTOCOL}://${HOST}:${PORT}/`);
+  
 });

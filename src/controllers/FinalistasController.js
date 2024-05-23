@@ -41,7 +41,7 @@ const finalistasController = {
     
             // Buscar todos os cursos
             const [cursosResults] = await dbPromise.query(selectQueryCursos);
-    console.log(cursosResults)
+    
             for (const curso of cursosResults) {
                 const id_curso = curso.id_curso;
                 // Buscar todos os vídeos do curso
@@ -52,7 +52,7 @@ const finalistasController = {
                 for (const usuario of usuariosResults) {
                     // Buscar vídeos assistidos pelo usuário para o curso específico
                     const [videosAssistidosResults] = await dbPromise.query(selectQueryVideosAssistidos, [usuario.id_usuario, id_curso]);
-    
+                    
                     // Verificar se o usuário assistiu a todos os vídeos do curso
                     if (videosAssistidosResults.length === videosResults.length) {
                         // Verificar se o usuário já é finalista do curso
