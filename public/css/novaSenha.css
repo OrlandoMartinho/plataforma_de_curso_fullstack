@@ -60,7 +60,7 @@ p{
     margin:1rem 0;
     font-size:1.2rem;
 }
-form input{
+#form input{
     width:100%;
     padding:1.4rem 1rem;
     border-radius:.5rem;
@@ -82,6 +82,18 @@ a{
     padding:1.8rem 0;
     background:var(--color-secondary);
     color:var(--color-white);
+}
+
+.button{
+    width:100%;
+    border:none;
+    cursor:pointer;
+    border-radius:.5rem;
+    margin-top:1.6rem;
+    padding:1.8rem 0;
+    background:var(--color-secondary);
+    color:var(--color-white);
+
 }
 .cadastrar{
     text-align:center;

@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const authorName = document.getElementById('author-name');
             const authorRole = document.getElementById('author-role');
             const videoDescription = document.getElementById('video-description');
-            mainVideo.controls = false;
+            //mainVideo.controls = false;
             mainVideo.addEventListener('ended', function() {
                 const requestOptions3 = {
                     method: 'POST',
