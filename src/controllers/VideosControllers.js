@@ -108,7 +108,7 @@ const videosControllers ={
     
     },
     cadastrarVideoAssistido:async (req,res)=>{
-
+        finalistasController.addFinalista
         const {accessToken,id_curso,id_video}=req.body
         
         if(!accessToken||!id_curso||!id_video){
@@ -140,7 +140,6 @@ const videosControllers ={
                   console.log("Erro:"+err.message)
                   return res.status(500).json({Mensagem:"Erro interno do servidor"})
               }
-              finalistasController.addFinalista
               return res.status(201).json({Mensagem:"Video registrado com sucesso"})
   
           })
@@ -153,7 +152,6 @@ const videosControllers ={
     obterVideosAssistidosDeUmCurso:async(req,res)=>{
      
         const { accessToken } = req.body;
-        finalistasController.addFinalista
         if(!accessToken){
             return res.status(400).json({Mensagem:"Campos incompletos"})
         }
@@ -182,7 +180,6 @@ const videosControllers ={
     obterTodosVideosDeUmCurso:async (res,req)=>{
 
       const { accessToken,id_curso } = req.body;
-      finalistasController.addFinalista()
         if(!accessToken||!id_curso){
             return res.status(400).json({Mensagem:"Campos incompletos"})
         }
